@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-depl
+spec:
+  replicas: 1 # Number of copies of this pod to run
+  selector:
+    # Select the pod with the label "app: auth"
+    matchLabels:
+      app: auth
+  # Tells kubernetes to create a pod with label "app: auth"
+  # which is used in the sector section to ideitify the correct pod
+  template:
+    metadata:
+      labels:
+        app: auth
+    # Configure the pod
+    spec:
+      containers:
+        - name: auth
+          image: therealdarkdev/auth
+          imagePullPolicy: Never
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-srv
+spec:
+  # Tell service to direct incoming traffic to
+  # the pod with label "app: auth"
+  selector:
+    app: auth
+  type: ClusterIP # default is type of ClusterIP anyways
+  ports:
+    - name: auth
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
