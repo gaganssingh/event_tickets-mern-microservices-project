@@ -1,4 +1,4 @@
-## Configure a service:
+## Configure a new service:
 
 #### Creating a basic server
 
@@ -39,3 +39,22 @@ touch infra/k8s/auth-depl.yaml
    - Automatically: By running `skaffold init` command at the root of the project.
    - Manually: Creating the `skaffold.yaml` config file manually and adding the config.
 10. Test the configuration by running: `skaffold dev`
+
+#### Setup Ingress-Nginx to allow outside-in communication:
+
+11. Install the kubernetes ingress-nginx controller service by running the latest quick start command from the [official installation page](https://kubernetes.github.io/ingress-nginx/deploy/).
+12. Create the config file: `infra/k8s/ingress-srv.yaml`
+13. Update the hosts file to access the application on a web browser:
+
+- Update the hosts file:
+  - MacOS/Linus: /etc/hosts
+  - Windows: C:\Windows\System32\drivers\etc\hosts
+- Add to the hosts file:
+  - 127.0.0.1 ticketing.dev
+
+14. Visit the application on the browser: `ticketing.dev`. If chrome shows an unsafe error, type `thisisunsafe` anywhere on the screen.
+
+### IMPORTANT: Cleanup after finished development
+
+1. Upon termination of the skaffold service, skaffold will automatically cleanup all services, deployments and pods. Nothing to do manually.
+2. Delete the hosts assignment from the `...etc/hosts/` file.
