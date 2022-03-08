@@ -1,4 +1,8 @@
 import express from "express";
+import { currentUserRouter } from "./routes/current-user.router";
+import { signinRouter } from "./routes/signin.router";
+import { signoutRouter } from "./routes/signout.router";
+import { signupRouter } from "./routes/signup.router";
 
 // INIT APP
 const app = express();
@@ -6,10 +10,16 @@ const app = express();
 // MIDDLEWARES
 app.use(express.json());
 
+// MOUNT ROUTES
 // Routes
-app.get("/api/users/currentuser", (req, res) => {
-  res.send({ message: "Hello from express" });
-});
+// app.get("/api/users/currentuser", (req, res) => {
+//   res.send();
+// });
+
+app.use(`/api/users`, signupRouter);
+app.use(`/api/users`, currentUserRouter);
+app.use(`/api/users`, signinRouter);
+app.use(`/api/users`, signoutRouter);
 
 // START SERVER
 app.listen(3000, () => console.log(`[✔ AUTH SERVICE] Listening on PORT 3000`));

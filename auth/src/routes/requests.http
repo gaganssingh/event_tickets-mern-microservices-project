@@ -1,0 +1,8 @@
+### Signup Route
+POST http://ticketing.dev/api/users/signup
+Content-Type: application/json
+
+{
+  "email": "t@t.com",
+  "password": "12345678"
+}
