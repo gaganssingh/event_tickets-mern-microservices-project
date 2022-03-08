@@ -21,6 +21,6 @@ build:
             dest: . # and sync them to the cooresponding path inside the container
 deploy:
   kubectl:
-    # Same as manually running `kubectl apply -f infra/k8s/`
+    # Same as manually running `kubectl apply -f infra/k8s/xxx.yaml`
     manifests:
       - ./infra/k8s/*

@@ -2,11 +2,11 @@
 
 #### Creating a basic server
 
-1. Create a directory for the service at the root of the project: `mkdir auth`
+1. Create a directory for the service at the root of the project: `mkdir <SERVICE_NAME>`
 2. Inside the service directory, init a node project and install basic dependencies:
 
 ```
-cd auth/
+cd <SERVICE_NAME>/
 npm init -y
 npm i express @types/express typescript ts-node-dev
 ```
@@ -15,7 +15,7 @@ npm i express @types/express typescript ts-node-dev
 4. Setup a basic server:
 
 ```
-cd auth/
+cd <SERVICE_NAME>/
 mkdir src
 touch src/index.ts
 ```
@@ -32,7 +32,7 @@ touch src/index.ts
 
 ```
 mkdir infra/k8s
-touch infra/k8s/auth-depl.yaml
+touch infra/k8s/<SERVICE_NAME>-depl.yaml
 ```
 
 9. Create a `skaffold.yaml` config file to facilitate continuous development:
