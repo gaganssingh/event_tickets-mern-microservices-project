@@ -15,7 +15,7 @@ signupRouter
         .isLength({ min: 6, max: 36 })
         .withMessage("Password mush be between 6 and 36 characters"),
     ],
-    (req: Request, res: Response) => {
+    async (req: Request, res: Response) => {
       // Check if any errors are present on the req.body
       // using the express-validator lib
       const errors = validationResult(req);
