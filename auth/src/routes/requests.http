@@ -1,8 +1,11 @@
-### Signup Route
-POST http://ticketing.dev/api/users/signup
+### Signup Route 
+POST http://ticketing.dev/api/users/signup HTTP/1.1
 Content-Type: application/json
 
 {
   "email": "t@t.com",
   "password": "123456"
 }
+
+### 404 NOT FOUND
+GET http://ticketing.dev/api/users/notfound404 HTTP/1.1

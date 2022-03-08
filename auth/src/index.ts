@@ -1,4 +1,5 @@
 import express from "express";
+import { NotFoundError } from "./errors/not-found-error";
 import { errorHandler } from "./middlewares/error-handler";
 import { currentUserRouter } from "./routes/current-user.router";
 import { signinRouter } from "./routes/signin.router";
@@ -12,10 +13,15 @@ const app = express();
 app.use(express.json());
 
 // MOUNT ROUTES
-app.use(`/api/users`, signupRouter);
 app.use(`/api/users`, currentUserRouter);
 app.use(`/api/users`, signinRouter);
 app.use(`/api/users`, signoutRouter);
+app.use(`/api/users`, signupRouter);
+
+// 404 NOT FOUND ERROR
+app.all("*", () => {
+  throw new NotFoundError();
+});
 
 // ERROR HANDLER
 app.use(`*`, errorHandler);
