@@ -1,5 +1,7 @@
 import express from "express";
 import "express-async-errors";
+import mongoose from "mongoose";
+
 import { NotFoundError } from "./errors/not-found-error";
 import { errorHandler } from "./middlewares/error-handler";
 import { currentUserRouter } from "./routes/current-user.router";
@@ -27,5 +29,17 @@ app.all("*", async (req, res) => {
 // ERROR HANDLER
 app.use(`*`, errorHandler);
 
-// START SERVER
-app.listen(3000, () => console.log(`[✔ AUTH SERVICE] Listening on PORT 3000`));
+// MongoDB CONNECTION & SERVER START
+(async () => {
+  try {
+    await mongoose.connect(`mongodb://auth-mongo-srv:27017/auth`);
+    console.log(`[✔ AUTH DATABASE] Successfully connected`);
+  } catch (err) {
+    console.error(err);
+  }
+
+  // START SERVER
+  app.listen(3000, () =>
+    console.log(`[✔ AUTH SERVICE] Listening on PORT 3000`)
+  );
+})();

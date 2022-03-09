@@ -9,16 +9,17 @@ spec:
     matchLabels:
       app: auth
   # Tells kubernetes to create a pod with label "app: auth"
-  # which is used in the sector section to ideitify the correct pod
+  # which is used in the selector section to ideitify the correct pod
   template:
     metadata:
+      # What to name the pod
       labels:
         app: auth
     # Configure the pod
     spec:
       containers:
         - name: auth
-          image: therealdarkdev/auth
+          image: therealdarkdev/auth # image built locally using the ./auth folder
           imagePullPolicy: Never
 ---
 apiVersion: v1

@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-mongo-depl
+spec:
+  replicas: 1 # Number of copies of this pod to run
+  selector:
+    # Select the pod with the label "app: auth-mongo"
+    matchLabels:
+      app: auth-mongo
+  # Tells kubernetes to create a pod with label "app: auth-mongo"
+  # which is used in the selector section to ideitify the correct pod
+  template:
+    metadata:
+      # What to name the pod
+      labels:
+        app: auth-mongo
+    # Pod configuration
+    spec:
+      containers:
+        - name: auth-mongo
+          image: mongo # Image pulled from docker hub
+---
+apiVersion: v1
+kind: Service
+metadata:
+  # Use this name to connect to the db:
+  # await mongoose.connect("mongodb://auth-mongo-srv:27017/<DATABASE_NAME>")
+  name: auth-mongo-srv
+spec:
+  # Tell service to direct incoming traffic to
+  # the pod with label "app: auth-mongo"
+  selector:
+    app: auth-mongo
+  type: ClusterIP # default is type of ClusterIP anyways
+  ports:
+    - name: db # This name is just for info/logging purposes
+      protocol: TCP
+      port: 27017 # 27017 is the default mongodb port
+      targetPort: 27017 # 27017 is the default mongodb port

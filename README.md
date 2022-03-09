@@ -54,6 +54,16 @@ touch infra/k8s/<SERVICE_NAME>-depl.yaml
 
 14. Visit the application on the browser: `ticketing.dev`. If chrome shows an unsafe error, type `thisisunsafe` anywhere on the screen.
 
+#### Dockerizing MongoDB
+
+1. Create a deployment & service configuration for mongodb: `infra/k8s/<SERVICE_NAME>-mongo-depl.yaml`.
+2. Start the cluster using `skaffold dev` & check if all pods are running using `kubectl get pods`.
+3. Install the package `mongoose` from npm and configure the startup script in `index.ts` for mongoose-to-mongodb connection:
+
+```
+await mongoose.connect(`mongodb://<SERVICE_NAME>-mongo-srv:27017/<DATABASE_NAME>`);
+```
+
 ### IMPORTANT: Cleanup after finished development
 
 1. Upon termination of the skaffold service, skaffold will automatically cleanup all services, deployments and pods. Nothing to do manually.
