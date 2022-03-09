@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { Password } from "../utilities/password";
 
 // Describes the shape of the user schema
 interface UserAttrs {
@@ -26,6 +27,18 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+});
+
+// Hash password BEFORE saving it to the database
+userSchema.pre("save", async function (done) {
+  // Make sure it's not a password change request
+  // SUCH AS: CHANGED THE EMAIL BUT KEPT THE SAME PASSWORD
+  if (this.isModified("password")) {
+    const hashedPassword = await Password.toHash(this.get("password"));
+
+    this.set("password", hashedPassword);
+    done();
+  }
 });
 
 // ADD a method to the userSchema Object itself
