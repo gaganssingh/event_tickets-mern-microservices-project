@@ -1,6 +1,7 @@
 import express from "express";
 import "express-async-errors";
 import mongoose from "mongoose";
+import cookieSession from "cookie-session";
 
 import { NotFoundError } from "./errors/not-found-error";
 import { errorHandler } from "./middlewares/error-handler";
@@ -12,8 +13,20 @@ import { signupRouter } from "./routes/signup.router";
 // INIT APP
 const app = express();
 
+// Tell express to trust this app even
+// though it is sitting behind the nginx proxy
+app.set("trust proxy", true);
+
 // MIDDLEWARES
 app.use(express.json());
+app.use(
+  cookieSession({
+    // Using this library to send auth info/jwt token
+    // as a cookie to the frontend
+    signed: false,
+    secure: true,
+  })
+);
 
 // MOUNT ROUTES
 app.use(`/api/users`, currentUserRouter);
@@ -31,6 +44,9 @@ app.use(`*`, errorHandler);
 
 // MongoDB CONNECTION & SERVER START
 (async () => {
+  if (!process.env.JWT_KEY) {
+    throw new Error(`❌ JWT_KEY must be defined`);
+  }
   try {
     await mongoose.connect(`mongodb://auth-mongo-srv:27017/auth`);
     console.log(`[✔ AUTH DATABASE] Successfully connected`);

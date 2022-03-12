@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
 import { body, validationResult } from "express-validator";
+import jwt from "jsonwebtoken";
 import { BadRequestError } from "../errors/bad-request-error";
 import { RequestValidationError } from "../errors/request-validation-error";
 import { User } from "../models/user.model";
@@ -36,9 +37,19 @@ signupRouter
       const user = User.build({ email, password });
       await user.save();
 
-      return res
-        .status(201)
-        .json({ status: `✔`, message: `Successfully created a user`, user });
+      // GENERATE JWT
+      const jwtPayload = {
+        id: user.id,
+        email: user.email,
+      };
+      const userJwt = jwt.sign(jwtPayload, process.env.JWT_KEY!);
+
+      // STORE JWT ON THE SESSION OBJECT
+      req.session = {
+        jwt: userJwt,
+      };
+
+      return res.status(201).send(user);
     }
   );
 

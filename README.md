@@ -38,13 +38,21 @@ touch infra/k8s/<SERVICE_NAME>-depl.yaml
 9. Create a `skaffold.yaml` config file to facilitate continuous development:
    - Automatically: By running `skaffold init` command at the root of the project.
    - Manually: Creating the `skaffold.yaml` config file manually and adding the config.
-10. Test the configuration by running: `skaffold dev`
+
+#### Setting up secrets, if required (e.g. JWT secret, API Keys etc.)
+
+10. In the terminal, run: `kubectl create secret generic jwt-secret --from-literal=JWT_KEY=mysecretkey`.
+11. Update the service's deployment config to add a reference to the secret. Use the name `jwt-secret` as the reference.
+
+#### Test run the deployment:
+
+12. Test the configuration by running: `skaffold dev`
 
 #### Setup Ingress-Nginx to allow outside-in communication:
 
-11. Install the kubernetes ingress-nginx controller service by running the latest quick start command from the [official installation page](https://kubernetes.github.io/ingress-nginx/deploy/).
-12. Create the config file: `infra/k8s/ingress-srv.yaml`
-13. Update the hosts file to access the application on a web browser:
+13. Install the kubernetes ingress-nginx controller service by running the latest quick start command from the [official installation page](https://kubernetes.github.io/ingress-nginx/deploy/).
+14. Create the config file: `infra/k8s/ingress-srv.yaml`
+15. Update the hosts file to access the application on a web browser:
 
 - Update the hosts file:
   - MacOS/Linus: /etc/hosts
@@ -52,7 +60,7 @@ touch infra/k8s/<SERVICE_NAME>-depl.yaml
 - Add to the hosts file:
   - 127.0.0.1 ticketing.dev
 
-14. Visit the application on the browser: `ticketing.dev`. If chrome shows an unsafe error, type `thisisunsafe` anywhere on the screen.
+16. Visit the application on the browser: `ticketing.dev`. If chrome shows an unsafe error, type `thisisunsafe` anywhere on the screen.
 
 #### Dockerizing MongoDB
 
@@ -68,3 +76,10 @@ await mongoose.connect(`mongodb://<SERVICE_NAME>-mongo-srv:27017/<DATABASE_NAME>
 
 1. Upon termination of the skaffold service, skaffold will automatically cleanup all services, deployments and pods. Nothing to do manually.
 2. Delete the hosts assignment from the `...etc/hosts/` file.
+3. Delete any obsolete secrets assigned on kubectl.
+
+### General Commands
+
+- Create a new kubectl secret: `kubectl create secret generic <SECRET_NAME> --from-literal=<KEY_NAME>=<KEY_VALUE>`.
+- List all kubectl secrets on your system with: `kubectl get secrets`.
+- Delete a kubectl secret using: `kubectl delete secret <SECRET_NAME>`.
