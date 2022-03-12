@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { Password } from "../utilities/password";
+import { PasswordManager } from "../utilities/password-manager";
 
 // Describes the shape of the user schema
 interface UserAttrs {
@@ -18,23 +18,35 @@ interface UserModel extends mongoose.Model<UserDoc> {
   build(attrs: UserAttrs): UserDoc;
 }
 
-const userSchema = new mongoose.Schema({
-  email: {
-    type: String,
-    required: true,
+const userSchema = new mongoose.Schema(
+  {
+    email: {
+      type: String,
+      required: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
   },
-  password: {
-    type: String,
-    required: true,
-  },
-});
+  {
+    toJSON: {
+      transform(doc, ret) {
+        ret.id = ret._id;
+        delete ret._id;
+        delete ret.__v;
+        delete ret.password;
+      },
+    },
+  }
+);
 
 // Hash password BEFORE saving it to the database
 userSchema.pre("save", async function (done) {
   // Make sure it's not a password change request
   // SUCH AS: CHANGED THE EMAIL BUT KEPT THE SAME PASSWORD
   if (this.isModified("password")) {
-    const hashedPassword = await Password.toHash(this.get("password"));
+    const hashedPassword = await PasswordManager.toHash(this.get("password"));
 
     this.set("password", hashedPassword);
     done();

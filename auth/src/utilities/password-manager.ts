@@ -5,7 +5,7 @@ import { promisify } from "util";
 // callback to async/await
 const scryptAsync = promisify(scrypt);
 
-export class Password {
+export class PasswordManager {
   // Static methods, as these can be used w/o creating an instance of the class
   // So, Password.methodName() is completely valid
 
