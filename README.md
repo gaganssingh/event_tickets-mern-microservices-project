@@ -2,7 +2,7 @@
 
 #### Creating a basic server
 
-1. Create a directory for the service at the root of the project: `mkdir <SERVICE_NAME>`
+1. Create a directory for the service at the root of the project: `mkdir <SERVICE_NAME>`.
 2. Inside the service directory, init a node project and install basic dependencies:
 
 ```
@@ -11,7 +11,7 @@ npm init -y
 npm i express @types/express typescript ts-node-dev
 ```
 
-3. At the root of the service's directory, generate a typescript config file: `tsc --init`
+3. At the root of the service's directory, generate a typescript config file: `tsc --init`.
 4. Setup a basic server:
 
 ```
@@ -19,6 +19,25 @@ cd <SERVICE_NAME>/
 mkdir src
 touch src/index.ts
 ```
+
+#### Adding testing using Jest & Supertest:
+
+5. Install development dependencies: `npm i -D jest @types/jest ts-jest supertest @types/supertest mongodb-memory-server`.
+6. Add the jest setup configuration file in: `src/test/setup.ts`.
+7. Add jest configuration in `package.json` to enable jest's typescript support and point to the jest setup file:
+
+```
+"jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "setupFilesAfterEnv": [
+      "./src/test/setup.ts"
+    ]
+}
+```
+
+8. Add the jest test script in the package.json file: `"test": "jest --watchAll --no-cache"`.
+9. Add a test file as required: `src/routes/__test__/signup.test.ts`.
 
 #### Dockerizing the service
 
