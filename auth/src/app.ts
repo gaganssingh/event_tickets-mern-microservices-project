@@ -24,7 +24,9 @@ app.use(
     // Using this library to send auth info/jwt token
     // as a cookie to the frontend
     signed: false,
-    secure: true,
+    // Send cookie over the response object only if
+    // the request is made over https, expect while testing
+    secure: process.env.NODE_ENV !== "test",
   })
 );
 
