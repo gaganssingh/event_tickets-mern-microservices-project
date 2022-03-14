@@ -90,7 +90,18 @@ touch infra/k8s/<SERVICE_NAME>-depl.yaml
 25. Add the Kubernetes deployment & service config in: `infra/k8s/client-depl.yaml`.
 26. Add the artifact configuration for the client in the `/skaffold.yaml` file.
 27. Add the client service's path to `infra/k8s/ingress-srv.yaml` and access the next app in the browser at the `hosts` address.
-    (NOTE: If skaffold instance is unable to find the client service/deployment, then build and push the client image to docker hub ans restart `skaffold dev`)
+    (📝 NOTE: If skaffold instance is unable to find the client service/deployment, then build and push the client image to docker hub ans restart `skaffold dev`)
+    (⚠ IMPORTANT: Ajax requests made by Nextjs FROM THE BROWSER, use relative url's. E.g., axios.post("/auth/signup"))
+    (⚠ IMPORTANT: Ajax requests made by Nextjs FROM THE SERVER, e.g. inside getInitialProps(), use the ingress-nginx facilitated url. E.g., axios.post("http://ingress-nginx-controller.ingress-nginx.svc.cluster.local/api/users/currentuser"). Run `kubectl get services -n ingress-nginx` to get the name. Complete axios request should look like:
+    ```
+    const baseUrl = "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local";
+    const { data } = await axios.get(`${baseUrl}/api/users/currentuser`, {
+      headers: {
+        Host: "ticketing.dev",
+      },
+    });
+    ```
+    )
 
 #### Dockerizing MongoDB
 
