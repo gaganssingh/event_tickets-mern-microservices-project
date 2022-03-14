@@ -41,37 +41,38 @@ touch src/index.ts
 
 #### Dockerizing the service
 
-5. Add start script in package.json `"start": "ts-node-dev src/index.ts"` and run `npm start` in terminal to test if it works.
-6. Create a docker image config file `Dockerfile` at the root of the service. Add the appropriate `.dockerignore` file.
-7. Build a docker image using this service and run the image to test if it works successfully.
+10. Add start script in package.json `"start": "ts-node-dev src/index.ts"` and run `npm start` in terminal to test if it works.
+11. Create a docker image config file `Dockerfile` at the root of the service. Add the appropriate `.dockerignore` file.
+12. Build a docker image using this service and run the image to test if it works successfully.
 
 #### Continuous development using Kubernetes & Skaffold
 
-8. Create the Kubernetes Deployment & Service config file:
+13. Create the Kubernetes Deployment & Service config file:
 
 ```
 mkdir infra/k8s
 touch infra/k8s/<SERVICE_NAME>-depl.yaml
 ```
 
-9. Create a `skaffold.yaml` config file to facilitate continuous development:
-   - Automatically: By running `skaffold init` command at the root of the project.
-   - Manually: Creating the `skaffold.yaml` config file manually and adding the config.
+14. Create a `skaffold.yaml` config file to facilitate continuous development:
+
+- Automatically: By running `skaffold init` command at the root of the project.
+- Manually: Creating the `skaffold.yaml` config file manually and adding the config.
 
 #### Setting up secrets, if required (e.g. JWT secret, API Keys etc.)
 
-10. In the terminal, run: `kubectl create secret generic jwt-secret --from-literal=JWT_KEY=mysecretkey`.
-11. Update the service's deployment config to add a reference to the secret. Use the name `jwt-secret` as the reference.
+15. In the terminal, run: `kubectl create secret generic jwt-secret --from-literal=JWT_KEY=mysecretkey`.
+16. Update the service's deployment config to add a reference to the secret. Use the name `jwt-secret` as the reference.
 
 #### Test run the deployment:
 
-12. Test the configuration by running: `skaffold dev`
+17. Test the configuration by running: `skaffold dev`
 
 #### Setup Ingress-Nginx to allow outside-in communication:
 
-13. Install the kubernetes ingress-nginx controller service by running the latest quick start command from the [official installation page](https://kubernetes.github.io/ingress-nginx/deploy/).
-14. Create the config file: `infra/k8s/ingress-srv.yaml`
-15. Update the hosts file to access the application on a web browser:
+18. Install the kubernetes ingress-nginx controller service by running the latest quick start command from the [official installation page](https://kubernetes.github.io/ingress-nginx/deploy/).
+19. Create the config file: `infra/k8s/ingress-srv.yaml`
+20. Update the hosts file to access the application on a web browser:
 
 - Update the hosts file:
   - MacOS/Linus: /etc/hosts
@@ -79,7 +80,13 @@ touch infra/k8s/<SERVICE_NAME>-depl.yaml
 - Add to the hosts file:
   - 127.0.0.1 ticketing.dev
 
-16. Visit the application on the browser: `ticketing.dev`. If chrome shows an unsafe error, type `thisisunsafe` anywhere on the screen.
+21. Visit the application on the browser: `ticketing.dev`. If chrome shows an unsafe error, type `thisisunsafe` anywhere on the screen.
+
+#### Adding a React/Next app
+
+22. Create a `client` directory at the root level.
+23. Install react dependencies `npm install react react-dom next`.
+24. Add the `Dockerfile` & `.dockerignore` config files in the client directory.
 
 #### Dockerizing MongoDB
 
