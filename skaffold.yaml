@@ -2,6 +2,11 @@ apiVersion: skaffold/v2beta27
 kind: Config
 metadata:
   name: event-tickets-mern-microservices-project
+deploy:
+  kubectl:
+    # Same as manually running `kubectl apply -f infra/k8s/xxx.yaml`
+    manifests:
+      - ./infra/k8s/*
 build:
   local:
     # Disable pushing images to docker hub
@@ -28,10 +33,5 @@ build:
           # In case of changes: Sync changes from local directory to the pod
           # But if change in anything else (e.g. added a new dependency in package.json)
           # then rebuild the whole pod
-          - src: "**/*.ts" # Hey docker, watch all files in the client folder
+          - src: "**/*.js" # Hey docker, watch all files in the src folder
             dest: . # and sync them to the cooresponding path inside the container
-deploy:
-  kubectl:
-    # Same as manually running `kubectl apply -f infra/k8s/xxx.yaml`
-    manifests:
-      - ./infra/k8s/*
