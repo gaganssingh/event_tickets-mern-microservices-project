@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-depl
+spec:
+  replicas: 1 # Number of copies of this pod to run
+  selector:
+    # Select the pod with the label "app: client"
+    matchLabels:
+      app: client
+  # Tells kubernetes to create a pod with label "app: client"
+  # which is used in the selector section to ideitify the correct pod
+  template:
+    metadata:
+      # What to name the pod
+      labels:
+        app: client
+    # Configure the pod
+    spec:
+      containers:
+        - name: client
+          image: therealdarkdev/client # image built locally using the ./client folder
+          imagePullPolicy: Never
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: client-srv
+spec:
+  # Tell service to direct incoming traffic to
+  # the pod with label "app: client"
+  selector:
+    app: client
+  type: ClusterIP # default is type of ClusterIP anyways
+  ports:
+    - name: client
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

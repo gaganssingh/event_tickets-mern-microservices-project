@@ -87,6 +87,10 @@ touch infra/k8s/<SERVICE_NAME>-depl.yaml
 22. Create a `client` directory at the root level.
 23. Install react dependencies `npm install react react-dom next`.
 24. Add the `Dockerfile` & `.dockerignore` config files in the client directory.
+25. Add the Kubernetes deployment & service config in: `infra/k8s/client-depl.yaml`.
+26. Add the artifact configuration for the client in the `/skaffold.yaml` file.
+27. Add the client service's path to `infra/k8s/ingress-srv.yaml` and access the next app in the browser at the `hosts` address.
+    (NOTE: If skaffold instance is unable to find the client service/deployment, then build and push the client image to docker hub ans restart `skaffold dev`)
 
 #### Dockerizing MongoDB
 
