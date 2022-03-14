@@ -23,6 +23,6 @@ beforeEach(async () => {
 });
 
 afterAll(async () => {
-  await mongoInMemoryDbInstance.stop();
   await mongoose.connection.close();
+  await mongoInMemoryDbInstance.stop();
 });
