@@ -1,6 +1,6 @@
 import request from "supertest";
 import { app } from "../../app";
-import { signupRouteAddress } from "../../test/test.utils";
+import { generateTestCookie, signupRouteAddress } from "../../test/test.utils";
 
 describe(`[Signup Route]`, () => {
   it(`responds with status code 400 when supplied invalid email`, async () => {
@@ -55,7 +55,7 @@ describe(`[Signup Route]`, () => {
       .expect(201);
   });
 
-  it(`returns a 400 error when signing up with an existing email`, async () => {
+  it.only(`returns a 400 error when signing up with an existing email`, async () => {
     await request(app)
       .post(signupRouteAddress)
       .send({ email: "t@t.com", password: "123456" })

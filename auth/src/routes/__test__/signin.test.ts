@@ -1,6 +1,6 @@
 import request from "supertest";
 import { app } from "../../app";
-import { signinRouteAddress, signupRouteAddress } from "../../test/test.utils";
+import { generateTestCookie, signinRouteAddress } from "../../test/test.utils";
 
 describe(`[Signin Route]`, () => {
   it(`responds with status code 400 if invalid email`, async () => {
@@ -25,10 +25,7 @@ describe(`[Signin Route]`, () => {
   });
 
   it(`responds with status code 400 if password incorrect`, async () => {
-    await request(app)
-      .post(signupRouteAddress)
-      .send({ email: "t@t.com", password: "123456" })
-      .expect(201);
+    await generateTestCookie();
 
     return request(app)
       .post(signinRouteAddress)
@@ -37,10 +34,7 @@ describe(`[Signin Route]`, () => {
   });
 
   it(`successfully signs in a user`, async () => {
-    await request(app)
-      .post(signupRouteAddress)
-      .send({ email: "t@t.com", password: "123456" })
-      .expect(201);
+    await generateTestCookie();
 
     return request(app)
       .post(signinRouteAddress)
@@ -49,11 +43,8 @@ describe(`[Signin Route]`, () => {
   });
 
   it(`responds with a cookie on successful signin`, async () => {
-    const response = await request(app)
-      .post(signupRouteAddress)
-      .send({ email: "t@t.com", password: "123456" })
-      .expect(201);
+    const response = await generateTestCookie();
 
-    expect(response.get("Set-Cookie")).toBeDefined();
+    expect(response).toBeDefined();
   });
 });

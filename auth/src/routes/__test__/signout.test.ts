@@ -1,29 +1,30 @@
 import request from "supertest";
 import { app } from "../../app";
-import { signoutRouteAddress, signupRouteAddress } from "../../test/test.utils";
+import {
+  generateTestCookie,
+  signoutRouteAddress,
+  signupRouteAddress,
+} from "../../test/test.utils";
 
 describe(`[Signout Route]`, () => {
   it(`successfully signs out the user`, async () => {
     await request(app)
-      .post(signupRouteAddress)
-      .send({ email: "t@t.com", password: "123456" })
-      .expect(201);
-
-    await request(app).post(signoutRouteAddress).expect(200);
+      .post(signoutRouteAddress)
+      .set("Cookie", await generateTestCookie())
+      .expect(200);
   });
 
   it(`clears the current user's session upon signout`, async () => {
-    const signupResponse = await request(app)
-      .post(signupRouteAddress)
-      .send({ email: "t@t.com", password: "123456" })
-      .expect(201);
+    const signupCookie = await generateTestCookie();
 
     const signoutResponse = await request(app)
       .post(signoutRouteAddress)
       .expect(200);
 
-    expect(signupResponse.get("Set-Cookie")[0].split(";")[0]).not.toEqual(
-      signoutResponse.get("Set-Cookie")[0].split(";")[0]
+    const signoutCookie = signoutResponse.get("Set-Cookie");
+
+    expect(signupCookie[0].split(";")[0]).not.toEqual(
+      signoutCookie[0].split(";")[0]
     );
   });
 });
