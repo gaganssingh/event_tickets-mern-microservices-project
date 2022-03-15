@@ -1,10 +1,6 @@
 import request from "supertest";
 import { app } from "../../app";
-import {
-  generateTestCookie,
-  signoutRouteAddress,
-  signupRouteAddress,
-} from "../../test/test.utils";
+import { generateTestCookie, signoutRouteAddress } from "../../test/test.utils";
 
 describe(`[Signout Route]`, () => {
   it(`successfully signs out the user`, async () => {

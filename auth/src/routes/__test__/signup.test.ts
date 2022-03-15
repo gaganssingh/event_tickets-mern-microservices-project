@@ -1,6 +1,6 @@
 import request from "supertest";
 import { app } from "../../app";
-import { generateTestCookie, signupRouteAddress } from "../../test/test.utils";
+import { signupRouteAddress } from "../../test/test.utils";
 
 describe(`[Signup Route]`, () => {
   it(`responds with status code 400 when supplied invalid email`, async () => {

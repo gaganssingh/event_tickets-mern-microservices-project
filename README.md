@@ -113,6 +113,13 @@ touch infra/k8s/<SERVICE_NAME>-depl.yaml
 await mongoose.connect(`mongodb://<SERVICE_NAME>-mongo-srv:27017/<DATABASE_NAME>`);
 ```
 
+#### Publishing an npm package
+
+1. Create a directory at the root where all code for this npm package will be written `mkdir common`.
+2. Inside `package.json`, rename the project: `@gsinghtickets/comm`.
+3. `git add . && git commit -m "initial commit"` inside the common directory.
+4. Push to npm: `npm publish --access public`.
+
 ### IMPORTANT: Cleanup after finished development
 
 1. Upon termination of the skaffold service, skaffold will automatically cleanup all services, deployments and pods. Nothing to do manually.

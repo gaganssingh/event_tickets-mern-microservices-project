@@ -3,8 +3,7 @@ import { body } from "express-validator";
 import jwt from "jsonwebtoken";
 
 import { User } from "../models/user.model";
-import { BadRequestError } from "../errors/bad-request-error";
-import { validateRequest } from "../middlewares/validate-request";
+import { BadRequestError, validateRequest } from "@gsinghtickets/comm";
 import { PasswordManager } from "../utilities/password-manager";
 
 const signinRouter = express.Router();
