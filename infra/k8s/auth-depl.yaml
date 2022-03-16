@@ -23,6 +23,8 @@ spec:
           imagePullPolicy: Never
           # Environment Variables
           env:
+            - name: MONGO_URI
+              value: "mongodb://auth-mongo-srv:27017/auth"
             - name: JWT_KEY # Name of the secret: Use this name to reference secret in the service
               valueFrom: # Where to get the value of the secret
                 secretKeyRef:

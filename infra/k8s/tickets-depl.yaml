@@ -23,8 +23,10 @@ spec:
           imagePullPolicy: Never
           # Environment Variables
           env:
+            - name: MONGO_URI # Name of the secret: Use this name to reference secret in the service
+              value: "mongodb://tickets-mongo-srv:27017/tickets"
             - name: JWT_KEY # Name of the secret: Use this name to reference secret in the service
-              valueFrom: # Where to get the value of the secret
+              valueFrom: # Refer to the env variable set using the kubectl command
                 secretKeyRef:
                   name: jwt-secret
                   key: JWT_KEY
