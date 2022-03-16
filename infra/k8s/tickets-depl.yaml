@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tickets-depl
+spec:
+  replicas: 1 # Number of copies of this pod to run
+  selector:
+    # Select the pod with the label "app: tickets"
+    matchLabels:
+      app: tickets
+  # Tells kubernetes to create a pod with label "app: tickets"
+  # which is used in the selector section to ideitify the correct pod
+  template:
+    metadata:
+      # What to name the pod
+      labels:
+        app: tickets
+    # Configure the pod
+    spec:
+      containers:
+        - name: tickets
+          image: therealdarkdev/tickets # image built locally using the ./tickets folder
+          imagePullPolicy: Never
+          # Environment Variables
+          env:
+            - name: JWT_KEY # Name of the secret: Use this name to reference secret in the service
+              valueFrom: # Where to get the value of the secret
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_KEY
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tickets-srv
+spec:
+  # Tell service to direct incoming traffic to
+  # the pod with label "app: tickets"
+  selector:
+    app: tickets
+  type: ClusterIP # default is type of ClusterIP anyways
+  ports:
+    - name: tickets
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

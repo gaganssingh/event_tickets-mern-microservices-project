@@ -35,3 +35,14 @@ build:
           # then rebuild the whole pod
           - src: "**/*.js" # Hey docker, watch all files in the src folder
             dest: . # and sync them to the cooresponding path inside the container
+    - image: therealdarkdev/tickets
+      context: tickets
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          # In case of changes: Sync changes from local directory to the pod
+          # But if change in anything else (e.g. added a new dependency in package.json)
+          # then rebuild the whole pod
+          - src: "src/**/*.ts" # Hey docker, watch all files in the src folder
+            dest: . # and sync them to the cooresponding path inside the container

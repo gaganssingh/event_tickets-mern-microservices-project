@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tickets-mongo-depl
+spec:
+  replicas: 1 # Number of copies of this pod to run
+  selector:
+    # Select the pod with the label "app: tickets-mongo"
+    matchLabels:
+      app: tickets-mongo
+  # Tells kubernetes to create a pod with label "app: tickets-mongo"
+  # which is used in the selector section to ideitify the correct pod
+  template:
+    metadata:
+      # What to name the pod
+      labels:
+        app: tickets-mongo
+    # Pod configuration
+    spec:
+      containers:
+        - name: tickets-mongo
+          image: mongo # Image pulled from docker hub
+---
+apiVersion: v1
+kind: Service
+metadata:
+  # Use this name to connect to the db:
+  # await mongoose.connect("mongodb://tickets-mongo-srv:27017/<DATABASE_NAME>")
+  name: tickets-mongo-srv
+spec:
+  # Tell service to direct incoming traffic to
+  # the pod with label "app: tickets-mongo"
+  selector:
+    app: tickets-mongo
+  type: ClusterIP # default is type of ClusterIP anyways
+  ports:
+    - name: db # This name is just for info/logging purposes
+      protocol: TCP
+      port: 27017 # 27017 is the default mongodb port
+      targetPort: 27017 # 27017 is the default mongodb port
