@@ -1,8 +1,8 @@
 import express from "express";
 import "express-async-errors";
 import cookieSession from "cookie-session";
-
-import { NotFoundError, errorHandler } from "@gsinghtickets/comm";
+import { NotFoundError, errorHandler, currentUser } from "@gsinghtickets/comm";
+import { createTicketRouter } from "./routes/new.router";
 
 // INIT APP
 const app = express();
@@ -23,9 +23,10 @@ app.use(
     secure: process.env.NODE_ENV !== "test",
   })
 );
+app.use(currentUser);
 
 // MOUNT ROUTES
-
+app.use(`/api`, createTicketRouter);
 
 // 404 NOT FOUND ERROR
 app.all("*", async (req, res) => {
