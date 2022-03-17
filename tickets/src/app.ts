@@ -4,6 +4,7 @@ import cookieSession from "cookie-session";
 import { NotFoundError, errorHandler, currentUser } from "@gsinghtickets/comm";
 import { createTicketRouter } from "./routes/new.router";
 import { showTicketRouter } from "./routes/show.router";
+import { indexTicketRouter } from "./routes/index.router";
 
 // INIT APP
 const app = express();
@@ -28,6 +29,7 @@ app.use(currentUser);
 
 // MOUNT ROUTES
 app.use(`/api`, createTicketRouter);
+app.use(`/api`, indexTicketRouter);
 app.use(`/api`, showTicketRouter);
 
 // 404 NOT FOUND ERROR
