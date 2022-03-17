@@ -13,7 +13,7 @@ createTicketRouter
       body("title").notEmpty().withMessage("Please provide a valid title"),
       body("price")
         .isFloat({ gt: 0 })
-        .withMessage("Price muct be greater than 0"),
+        .withMessage("Price must be greater than 0"),
     ],
     validateRequest,
     async (req: Request, res: Response) => {
